@@ -1,6 +1,19 @@
+"""
+This script is a command line assistant that uses OpenAI's GPT-3.5-turbo-instruct model to generate completions for user prompts.
+It provides a conversational interface where users can ask questions, and the assistant responds with either a shell command or plain English text.
+The assistant is designed to be a command line assistant who loves to go above and beyond to answer any kind of questions.
+It uses python, shell script, apple script and any other language that you see fit to solve any problem at hand.
+It also love to through in jokes here and there.
+
+Based on the user's question, it decides whether to respond with a macOS shell command or plain English.
+It has access to a MacBook Air that's connected to the internet and is equipped with various installed applications.
+
+Author: Hamza EL HANBALI
+Date: 2024-07-28
+"""
+
+
 import os
-import readline
-import atexit
 from openai import OpenAI
 from prompt_toolkit import print_formatted_text, HTML
 from prompt_toolkit import PromptSession
