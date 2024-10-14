@@ -2,9 +2,20 @@ import os
 import readline
 import atexit
 from openai import OpenAI
+from prompt_toolkit import print_formatted_text, HTML
+from prompt_toolkit import PromptSession
+from prompt_toolkit.styles import Style
 
 # Set up OpenAI client
 client = OpenAI(api_key=os.getenv("OPEN_AI_KEY_TERMGPT"))
+
+# Define styles for prompt_toolkit
+style = Style.from_dict({
+    'you': '#00ff00 bold',  # Green
+    'termcompletiongpt': '#ff00ff bold',  # Magenta
+    'command': '#ffff00',  # Yellow
+    'conversation': '#00ffff',  # Cyan
+})
 
 def get_completion(prompt):
     """
@@ -49,25 +60,31 @@ def get_completion(prompt):
 
     return response.choices[0].text.strip()
 
-def terminal_completion(text, state):
-    if state == 0:
-        readline.insert_text("")
-        readline.redisplay()
+def print_colored(text, color):
+    print_formatted_text(HTML(f'<{color}>{text}</{color}>'), style=style)
 
 def main():
-    readline.set_completer(terminal_completion)
-    readline.parse_and_bind("tab: complete")
+    print_colored("Welcome to TermCompletionGPT. Type 'exit' to leave the program.", 'conversation')
+
+    session = PromptSession()
 
     while True:
         try:
-            prompt = input("You: ")
+            prompt = session.prompt(HTML('<you>You: </you>'), style=style)
+            if prompt.lower() == "exit":
+                break
             completion = get_completion(prompt)
-            print(f"TermCompletionGPT: {completion}")
+            
+            if completion.startswith("COMMAND_MODE:"):
+                print_formatted_text(HTML(f'<termcompletiongpt>TermCompletionGPT: </termcompletiongpt><command>{completion}</command>'), style=style)
+            else:
+                print_formatted_text(HTML(f'<termcompletiongpt>TermCompletionGPT: </termcompletiongpt><conversation>{completion}</conversation>'), style=style)
+        
         except KeyboardInterrupt:
             print("\nExiting...")
             break
         except Exception as e:
-            print(f"Error: {e}")
+            print_colored(f"Error: {e}", 'conversation')
 
 if __name__ == "__main__":
     main()
