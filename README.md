@@ -14,7 +14,7 @@ TermCompletionGPT acts as your personal AI assistant in the terminal. It can :
 
 To use TermCompletionGPT, you'll need Python 3.x and an OpenAI API key. Clone this repository, install the required dependencies, and set up your API key as an environment variable.
 
--git clone https://github.com/yourusername/TermCompletionGPT.git
+-git clone https://github.com/HamzaELHANBALI/TermCompletionGPT.git
 
 -cd TermCompletionGPT
 
